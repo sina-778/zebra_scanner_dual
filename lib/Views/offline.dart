@@ -1,13 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_datawedge/flutter_datawedge.dart';
 import 'package:sqflite/sqflite.dart';
-
 import 'item_repo.dart';
+import 'package:http/http.dart' as http;
 
 class OfflineMode extends StatefulWidget {
   const OfflineMode({Key? key}) : super(key: key);
-
   @override
   State<OfflineMode> createState() => _OfflineModeState();
 }
@@ -18,17 +19,14 @@ class _OfflineModeState extends State<OfflineMode> {
   bool _isEnabled = true;
   TextEditingController qtyCon = TextEditingController();
   Database? database;
-
 /*  //open database
   Future<Database?> openDB() async {
     database = await DatabaseHandler().openDB();
     return database;
   }
-
   //insert database
   Future<void> insertDB() async {
     database = await openDB();
-
     ItemsRepo itemsRepo = ItemsRepo();
     itemsRepo.createTable(database);
     ItemsModel itemsModel =
@@ -36,16 +34,13 @@ class _OfflineModeState extends State<OfflineMode> {
     await database?.insert('ITEMS', itemsModel.toMap());
     await database?.close();
   }
-
   //get items
   Future<void> getFromItems() async {
     database = await openDB();
-
     ItemsRepo itemsRepo = ItemsRepo();
     await itemsRepo.getItems(database);
     await database?.close();
   }*/
-
 /*  //API for ProductList
   bool haveProduct = false;
   List<ProductList> products = [];
@@ -55,7 +50,6 @@ class _OfflineModeState extends State<OfflineMode> {
     });
     var response = await http
         .get(Uri.parse("http://172.20.20.69/sina/unistock/product_list.php"));
-
     if (response.statusCode == 200) {
       products = productListFromJson(response.body);
       print(response.body);
@@ -66,14 +60,12 @@ class _OfflineModeState extends State<OfflineMode> {
       haveProduct = false;
     });
   }
-
   //update quantity
   Future<void> updateQty(String amt, String item) async {
     var response = await http.post(
         Uri.parse("http://172.20.20.69/sina/unistock/update_item.php"),
         body: jsonEncode(<String, dynamic>{"item": item, "qty": amt}));
   }
-
   //autoscann
   Future<void> autoScan(String lastCode) async {
     var response = await http.post(
@@ -86,10 +78,8 @@ class _OfflineModeState extends State<OfflineMode> {
     print(response.body);
     productList();
   }*/
-
   List<Map<String, dynamic>> itemsList = [];
   bool _isLoading = true;
-
   void getItemsList() async {
     final getData = await ItemsRepo.getUsers();
     setState(() {
@@ -242,6 +232,14 @@ class _OfflineModeState extends State<OfflineMode> {
             style: GoogleFonts.urbanist(
                 fontSize: 15, color: Colors.black, fontWeight: FontWeight.w800),
           ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  saveToMysqlWith(itemsList, itemsList[0]['item_code'],
+                      itemsList[0]['item_quantity']);
+                },
+                icon: Icon(Icons.upload))
+          ],
         ),
       ),
       body: Column(
@@ -536,7 +534,6 @@ class _OfflineModeState extends State<OfflineMode> {
   int? id;
   String? itemCode;
   TextEditingController qtyController = TextEditingController();
-
   //database all functions
   Future<void> addNewUser() async {
     await ItemsRepo.createUser(_lastCode.toString(), 1.toString());
@@ -548,5 +545,38 @@ class _OfflineModeState extends State<OfflineMode> {
 
   void deleteUser(id) async {
     await ItemsRepo.deleteUser(id);
+  }
+
+  Future saveToMysqlWith(itemList, item_code, item_quantity) async {
+    for (var i = 0; i < itemsList.length; i++) {
+      var data = jsonEncode(<String, dynamic>{
+        "item_code": itemsList[i]['item_code'],
+        "item_quantity": itemsList[i]['item_quantity'],
+        // "created_at": itemsList[i]['created_at'],
+      });
+      final response = await http.post(
+          Uri.parse("http://172.20.20.69/sina/unistock/upload.php"),
+          body: data);
+      if (response.statusCode == 200) {
+        print(data);
+        print("Saving Data ");
+      } else {
+        print(response.statusCode);
+      }
+    }
+/*    final response = await http.post(
+        Uri.parse("http://172.20.20.69/sina/unistock/upload2.php"),
+        body: {
+          "item_code": "007",
+          "item_quantity": "7",
+          // "created_at": itemsList[i]['created_at'],
+        });
+    if (response.statusCode == 200) {
+      print(item_quantity);
+      print(item_code);
+      print("Saving Data ");
+    } else {
+      print(response.statusCode);
+    }*/
   }
 }
