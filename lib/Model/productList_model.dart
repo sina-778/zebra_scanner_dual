@@ -13,39 +13,43 @@ String productListToJson(List<ProductList> data) =>
 class ProductList {
   ProductList({
     required this.xitem,
-    required this.date,
-    required this.xtime,
-    required this.itemname,
-    required this.supname,
+    required this.xdesc,
     required this.xcount,
     required this.lastqty,
+    required this.xcus,
+    required this.xcusname,
+    required this.xbodycode,
+    required this.xoldcode,
   });
 
   String xitem;
-  String date;
-  String xtime;
-  String itemname;
-  String supname;
+  String xdesc;
   int xcount;
   int lastqty;
+  String xcus;
+  String xcusname;
+  String xbodycode;
+  String xoldcode;
 
   factory ProductList.fromJson(Map<String, dynamic> json) => ProductList(
         xitem: json["xitem"],
-        date: json["date"],
-        xtime: json["xtime"],
-        itemname: json["itemname"],
-        supname: json["supname"],
+        xdesc: json["xdesc"],
         xcount: json["xcount"],
         lastqty: json["lastqty"],
+        xcus: json["xcus"],
+        xcusname: json["xcusname"],
+        xbodycode: json["xbodycode"],
+        xoldcode: json["xoldcode"],
       );
 
   Map<String, dynamic> toJson() => {
         "xitem": xitem,
-        "date": date,
-        "xtime": xtime,
-        "itemname": itemname,
-        "supname": supname,
+        "xdesc": xdesc,
         "xcount": xcount,
         "lastqty": lastqty,
+        "xcus": xcus,
+        "xcusname": xcusname,
+        "xbodycode": xbodycode,
+        "xoldcode": xoldcode,
       };
 }

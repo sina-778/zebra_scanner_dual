@@ -25,7 +25,7 @@ class _OnlineModeState extends State<OnlineMode> {
       haveProduct = true;
     });
     var response = await http
-        .get(Uri.parse("http://172.20.20.69/sina/unistock/product_list.php"));
+        .get(Uri.parse("http://172.20.20.69/sina/unistock/allProductList.php"));
 
     if (response.statusCode == 200) {
       products = productListFromJson(response.body);
@@ -194,7 +194,7 @@ class _OnlineModeState extends State<OnlineMode> {
                                         ),
                                       ),
                                       Text(
-                                        "Item Name :  ${products[index].itemname}",
+                                        "Item Name :  ${products[index].xdesc}",
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.urbanist(
                                           color: Colors.black,
@@ -202,7 +202,7 @@ class _OnlineModeState extends State<OnlineMode> {
                                         ),
                                       ),
                                       Text(
-                                        "Supplier Name :  ${products[index].supname}",
+                                        "Supplier Name :  ${products[index].xcusname}",
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.urbanist(
                                           color: Colors.black,
@@ -240,7 +240,7 @@ class _OnlineModeState extends State<OnlineMode> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Date : ${products[index].date}",
+                                          "Date : ${products[index].xbodycode}",
                                           style: GoogleFonts.urbanist(
                                             color: Colors.black,
                                             fontSize: 12,
@@ -248,7 +248,7 @@ class _OnlineModeState extends State<OnlineMode> {
                                           ),
                                         ),
                                         Text(
-                                          "Time: ${products[index].xtime}",
+                                          "Time: ${products[index].xitem}",
                                           style: GoogleFonts.urbanist(
                                             color: Colors.black,
                                             fontSize: 12,
@@ -287,7 +287,7 @@ class _OnlineModeState extends State<OnlineMode> {
                                                                   .black54),
                                                     ),
                                                     Text(
-                                                      "Item Name :  ${products[index].itemname}",
+                                                      "Item Name :  ${products[index].xdesc}",
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       style:
@@ -300,7 +300,7 @@ class _OnlineModeState extends State<OnlineMode> {
                                                                   .black54),
                                                     ),
                                                     Text(
-                                                      "Supplier Name:   ${products[index].supname}",
+                                                      "Supplier Name:   ${products[index].xcusname}",
                                                       style:
                                                           GoogleFonts.urbanist(
                                                               fontSize: 15,

@@ -63,4 +63,10 @@ class ItemsRepo {
       debugPrint("Something went wrong when deleting an item: $err");
     }
   }
+
+  static Future<void> dropTable() async {
+    final db = await ItemsRepo.db();
+    db.delete('listItems');
+    print("table deleted successfully");
+  }
 }
