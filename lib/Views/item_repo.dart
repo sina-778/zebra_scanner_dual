@@ -41,6 +41,11 @@ class ItemsRepo {
     return db.query('listItems');
   }
 
+  static Future<List<Map<String, dynamic>>> checkItem(String item_code) async {
+    final db = await ItemsRepo.db();
+    return db.query('listItems');
+  }
+
   //update quantity
   static Future<int> updateUser(int id, String? item_quantity) async {
     final db = await ItemsRepo.db();

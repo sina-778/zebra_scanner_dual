@@ -583,7 +583,7 @@ class _OfflineModeState extends State<OfflineMode> {
       itemsList = [];
       getItemsList();
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Successfully uploaded items to the server!'),
+        content: Text('Successfully uploaded items!'),
       ));
     });
   }
